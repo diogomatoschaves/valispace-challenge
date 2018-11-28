@@ -1,9 +1,6 @@
 
-.idea/markdown-navigator/
-.idea/misc.xml
-.idea/modules.xml
-.idea/valispace-challenge.iml
-.idea/workspace.xml
+
+.idea
 
 
 frontend/node_modules
