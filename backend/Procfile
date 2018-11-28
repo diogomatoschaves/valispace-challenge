@@ -1,0 +1,1 @@
+web: gunicorn valispace_backend.wsgi --log-file -
