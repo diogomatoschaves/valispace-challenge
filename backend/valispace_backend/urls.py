@@ -21,7 +21,7 @@ parentPath = os.path.abspath("..")
 if parentPath not in sys.path:
     sys.path.insert(0, parentPath)
 
-from backend.valispace.views import *
+from valispace.views import *
 
 urlpatterns = [
     url(r'^$', index),
