@@ -27,7 +27,7 @@ SECRET_KEY = '+f1b-)0qof%dr)3b0^x$d45oelbt&lge$vl9qs(#(%u_()60b1'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(os.environ.get('DJANGO_DEBUG', True))
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['valispace.herokuapp.com']
 
 
 # Application definition
