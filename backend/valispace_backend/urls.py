@@ -25,4 +25,8 @@ from valispace.views import *
 
 urlpatterns = [
     url(r'^$', index),
+    url(r'^fetch_functions$', return_functions),
+    url(r'^new_function$', add_function),
+    url(r'^delete_function$', delete_function),
+    url(r'^edit_function$', edit_function),
 ]
