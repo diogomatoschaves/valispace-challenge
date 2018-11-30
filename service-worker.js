@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/valispace-challenge/precache-manifest.e3f55858bc6144cefd2e1e4147c5bc75.js"
+  "/valispace-challenge/precache-manifest.fc515528889520fc9993577315b13599.js"
 );
 
 workbox.clientsClaim();
