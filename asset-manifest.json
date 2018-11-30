@@ -1,13 +1,13 @@
 {
-  "main.css": "/valispace-challenge/static/css/main.e68d7676.chunk.css",
-  "main.js": "/valispace-challenge/static/js/main.7ed2283d.chunk.js",
-  "main.js.map": "/valispace-challenge/static/js/main.7ed2283d.chunk.js.map",
-  "static/js/1.824aabc0.chunk.js": "/valispace-challenge/static/js/1.824aabc0.chunk.js",
-  "static/js/1.824aabc0.chunk.js.map": "/valispace-challenge/static/js/1.824aabc0.chunk.js.map",
+  "main.css": "/valispace-challenge/static/css/main.faee7d60.chunk.css",
+  "main.js": "/valispace-challenge/static/js/main.e2c5537b.chunk.js",
+  "main.js.map": "/valispace-challenge/static/js/main.e2c5537b.chunk.js.map",
+  "static/js/1.28c09d5e.chunk.js": "/valispace-challenge/static/js/1.28c09d5e.chunk.js",
+  "static/js/1.28c09d5e.chunk.js.map": "/valispace-challenge/static/js/1.28c09d5e.chunk.js.map",
   "runtime~main.js": "/valispace-challenge/static/js/runtime~main.471bf12c.js",
   "runtime~main.js.map": "/valispace-challenge/static/js/runtime~main.471bf12c.js.map",
-  "static/css/main.e68d7676.chunk.css.map": "/valispace-challenge/static/css/main.e68d7676.chunk.css.map",
+  "static/css/main.faee7d60.chunk.css.map": "/valispace-challenge/static/css/main.faee7d60.chunk.css.map",
   "index.html": "/valispace-challenge/index.html",
-  "precache-manifest.1e1aec822c2791def7757dea91dfdaa2.js": "/valispace-challenge/precache-manifest.1e1aec822c2791def7757dea91dfdaa2.js",
+  "precache-manifest.ab9f1d1d1b0ef1c022bd244a511c6cb2.js": "/valispace-challenge/precache-manifest.ab9f1d1d1b0ef1c022bd244a511c6cb2.js",
   "service-worker.js": "/valispace-challenge/service-worker.js"
 }
