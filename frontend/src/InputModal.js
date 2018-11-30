@@ -22,7 +22,13 @@ class InputModal extends Component {
     const { functionToEdit } = this.props
 
     if (prevProps.functionToEdit !== functionToEdit && functionToEdit && Object.keys(functionToEdit).length !== 0) {
-      this.setState({...functionToEdit, firstParamIntResults: [], secondParamIntResults: [], originalName: functionToEdit.name})
+      this.setState({
+        ...functionToEdit,
+        firstParamIntResults: [],
+        secondParamIntResults: [],
+        originalName: functionToEdit.name,
+        inputNotValid: false
+      })
     }
   }
 
@@ -82,7 +88,6 @@ class InputModal extends Component {
     setTimeout(() => {
       this.setState({[param]: []})
     }, 300)
-
   }
 
   render() {

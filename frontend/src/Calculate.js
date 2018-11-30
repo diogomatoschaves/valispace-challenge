@@ -16,9 +16,9 @@ class Calculate extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      result: ''
+      result: '',
+      operation: ''
     }
-    // this.buttonSubmit = this.buttonSubmit.bind(this)
   }
 
   handleChange = (e) => {
@@ -32,7 +32,7 @@ class Calculate extends Component {
 
     const terms = operation.split(' ')
 
-    const sanitizedTerms = terms.map((term, i) => {
+    const sanitizedTerms = terms.filter(term => term).map((term, i) => {
       return i % 2 === 0 ? Number(term) ? Number(term) : Object.keys(functions).filter(func => functions[func].name === term)
           .map(func => functions[func])[0] : operators.includes(term) ? term : null
     })
@@ -41,6 +41,7 @@ class Calculate extends Component {
       return [null, undefined, false].includes(el)
     }) && !(sanitizedTerms.length % 2 === 0)
 
+    console.log(terms)
     console.log(sanitizedTerms)
     console.log(pass)
 
@@ -58,22 +59,38 @@ class Calculate extends Component {
     }
 
   }
+
+  addInputValue = (funcName) => {
+    this.setState(state => {
+      return {
+        operation: `${state.operation} ${funcName}`.trim()
+      }
+    })
+  }
   
   render() {
 
     const { operation, result } = this.state
-    const { functions } = this.props
+    const { functions, operators } = this.props
 
     return (
       <div className="flex-column" style={{width: '80%', maxWidth: '850px', justifyContent: 'space-around'}}>
-        <div className="flex-row" style={{width: '100%', justifyContent: 'space-between'}}>
-          <ControlLabel>Available Functions:</ControlLabel>
-        </div>
+        <ControlLabel style={{alignSelf: 'flex-start'}}>Available Functions:</ControlLabel>
         <div className="flex-row" style={{width: '100%', justifyContent: 'flex-start', flexWrap: 'wrap'}}>
           {Object.keys(functions).map(func => {
             return (
-              <Label style={{marginRight: '6px', marginTop: '6px', fontSize: '1.3em', cursor: 'pointer'}}>
+              <Label key={func} bsStyle="primary" onClick={() => this.addInputValue(functions[func].name)} style={{marginRight: '6px', marginTop: '6px', fontSize: '1.3em', cursor: 'pointer'}}>
                 {functions[func].name}
+              </Label>
+            )
+          })}
+        </div>
+        <ControlLabel style={{alignSelf: 'flex-start', marginTop: '10px'}}>Operators:</ControlLabel>
+        <div className="flex-row" style={{width: '100%', justifyContent: 'flex-start', flexWrap: 'wrap'}}>
+          {operators.map(operator => {
+            return (
+              <Label key={operator} bsStyle="success" onClick={() => this.addInputValue(operator)} style={{marginRight: '6px', marginTop: '6px', fontSize: '1.3em', cursor: 'pointer'}}>
+                {operator}
               </Label>
             )
           })}

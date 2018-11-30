@@ -73,13 +73,14 @@ class FunctionsList extends Component {
 
     if (response.success) {
       const func = response.newFunction
+      console.log(func)
       addFunction({ id: String(func.id),
           name: func.name,
           operator: func.operator,
           firstParamInt: func.first_parameter_int,
-          firstParamFunc: func.first_parameter_func_id,
+          firstParamFunc: func.first_parameter_func,
           secondParamInt: func.second_parameter_int,
-          secondParamFunc: func.second_parameter_func_id,
+          secondParamFunc: func.second_parameter_func,
       })
       updateMessage({ message: 'The function was added.', bsStyle: 'success'})
     } else {
@@ -94,38 +95,19 @@ class FunctionsList extends Component {
     const response = await deleteFunctionAsync({ id })
 
     if (response.success) {
-      delFunction({ id })
+      delFunction(response.deleted_ids)
       updateMessage({ message: 'The function was deleted.', bsStyle: 'success'})
     } else {
       updateMessage({ message: 'There was an error processing your request.', bsStyle: 'danger'})
     }
   }
-
-  getFormattedDate = (timeStamp) => {
-
-    let difference = Date.now() - timeStamp;
-    const daysDifference = Math.floor(difference/1000/60/60/24);
-    difference -= daysDifference*1000*60*60*24;
-
-    const hoursDifference = Math.floor(difference/1000/60/60);
-    difference -= hoursDifference*1000*60*60;
-
-    const minutesDifference = Math.floor(difference/1000/60);
-    difference -= minutesDifference*1000*60;
-
-    const secondsDifference = Math.floor(difference/1000);
-
-    return daysDifference >= 1 ? `${daysDifference} ${daysDifference === 1 ? 'day' : 'days'} ago` :
-        hoursDifference >= 1 ? `${hoursDifference} ${hoursDifference === 1 ? 'hour' : 'hours'} ago` :
-            minutesDifference >= 1 ? `${minutesDifference} ${minutesDifference === 1 ? 'minute' : 'minutes'} ago` :
-                `${secondsDifference} ${secondsDifference === 1 ? 'second' : 'seconds'} ago`
-
-  };
   
   render() {
 
     const { functions, styleOptions, functionNames } = this.props
     const { showModal, editOrAdd, functionToEdit } = this.state
+
+    console.log(functions)
 
     const functionsArray = functions ? Object.keys(functions).map(key => functions[key]) : []
 
@@ -167,16 +149,15 @@ class FunctionsList extends Component {
                   <div className="flex-column" style={{width: '100%', padding: '20px'}}>
                     <div className='flex-row' style={{width: '100%', justifyContent: 'space-around'}}>
                       <div style={{width: '30%', textAlign: 'center', fontSize: '1.6em'}} className="message-header">
-                        <Label bsSize="large">{func.name}
-                        </Label>
+                        <Label bsStyle="primary" bsSize="large">{func.name}</Label>
                       </div>
                       <div style={{width: '30%', textAlign: 'center'}}>
-                        {func.firstParamFunc && <Label>{functions[func.firstParamFunc].name}</Label>}
+                        {func.firstParamFunc && <Label bsStyle="primary">{functions[func.firstParamFunc].name}</Label>}
                         {func.firstParamInt && func.firstParamInt}
                         {' '}
                         {func.operator && func.operator}
                         {' '}
-                        {func.secondParamFunc && <Label>{functions[func.secondParamFunc].name}</Label>}
+                        {func.secondParamFunc && <Label bsStyle="primary">{functions[func.secondParamFunc].name}</Label>}
                         {func.secondParamInt && func.secondParamInt}
                       </div>
                     </div>

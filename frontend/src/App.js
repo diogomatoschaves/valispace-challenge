@@ -12,6 +12,7 @@ class App extends Component {
     super(props)
     this.state = {
       functions: {},
+      functionNames: [],
       showMessage: false,
       message: ''
     }
@@ -92,11 +93,11 @@ class App extends Component {
     })
   }
 
-  delFunction = ({ id }) => {
+  delFunction = (ids) => {
     this.setState(state => {
       return {
         functions: Object.keys(state.functions).reduce((newState, funcId) => {
-          return funcId === id ? newState : {
+          return ids.includes(funcId) ? newState : {
             ...newState,
             [funcId]: state.functions[funcId]
           }
