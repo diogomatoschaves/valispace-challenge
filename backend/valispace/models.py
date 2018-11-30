@@ -7,10 +7,10 @@ class Functions(models.Model):
     # expression = models.TextField()
     operator = models.TextField(null=True, default=None)
     first_parameter_func = models.ForeignKey('self', related_name='first_function',
-                                                blank=True, null=True, on_delete=None, default=None)
+                                                blank=True, null=True, on_delete=models.CASCADE, default=None)
     first_parameter_int = models.IntegerField(null=True, blank=True, default=None)
     second_parameter_func = models.ForeignKey('self', related_name='second_function',
-                                                 blank=True, null=True, on_delete=None, default=None)
+                                                 blank=True, null=True, on_delete=models.CASCADE, default=None)
     second_parameter_int = models.IntegerField(null=True, blank=True, default=None)
 
     @property

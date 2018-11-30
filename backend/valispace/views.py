@@ -129,9 +129,15 @@ def delete_function(request):
 
         function_id = request.GET['id']
 
+        all_ids_before = list(Functions.objects.all().values_list('id', flat=True))
+
         Functions.objects.filter(id=function_id).delete()
 
-        return JsonResponse({'message': 'function {} deleted'.format(function_id), 'success': True}, safe=False)
+        all_ids_after = list(Functions.objects.all().values_list('id', flat=True))
+
+        deleted_ids = [str(item_id) for item_id in all_ids_before if item_id not in all_ids_after]
+
+        return JsonResponse({'message': 'function(s) deleted', 'deleted_ids': deleted_ids, 'success': True}, safe=False)
 
     else:
         return JsonResponse({'message': 'Method not allowed', 'success': False}, safe=False)
