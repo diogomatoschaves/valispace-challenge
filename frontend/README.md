@@ -10,9 +10,3 @@ In order to install the frontend dependencies as per `frontend/package.json`, ru
 In order to start the development server, run:
 
 `$ npm start`
-
-### Run tests
-
-In order to run tests, run:
-
-`$ npm run test`
