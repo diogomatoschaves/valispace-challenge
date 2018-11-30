@@ -101,5 +101,26 @@ export const performNewCalculation = async (body) => {
   }
 }
 
+export const typeAhead = async (query) => {
+  
+  const headers = new Headers()
+    
+  const url = `${process.env.NODE_ENV === 'development' ? process.env.REACT_APP_API_URL_DEVELOPMENT 
+    : process.env.REACT_APP_API_URL_PRODUCTION}/match_functions?query=${query}`;
+     
+  const response = await fetch(url, {
+    method: 'get',
+    headers,
+  })
+      
+  if (response.status >= 400) {
+    throw(new Error('Error sending request'))
+  } else {
+    return await response.json()
+  }
+}
+
+
+
 
 

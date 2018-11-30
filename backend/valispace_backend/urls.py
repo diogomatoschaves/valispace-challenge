@@ -29,4 +29,6 @@ urlpatterns = [
     url(r'^new_function$', add_function),
     url(r'^delete_function$', delete_function),
     url(r'^edit_function$', edit_function),
+    url(r'^match_functions$', type_ahead),
+    url(r'^new_calculation$', calculate)
 ]

@@ -4,12 +4,12 @@
 
 
 import React, { Component } from 'react'
-import { ListGroup, ListGroupItem, Button, ButtonGroup, Well } from 'react-bootstrap'
+import { ListGroup, ListGroupItem, Button, ButtonGroup, Well, Label } from 'react-bootstrap'
 import { editFunctionAsync, addFunctionAsync, deleteFunctionAsync } from './apiCalls'
 import InputModal  from './InputModal'
 
 
-class TranslationsList extends Component {
+class FunctionsList extends Component {
 
   static defaultProps = {
     styleOptions: {
@@ -26,7 +26,7 @@ class TranslationsList extends Component {
   }
 
   handleClose = () => {
-    this.setState({ showModal: false })
+    this.setState({ showModal: false, functionToEdit: null })
   }
 
   openModal = ({ editOrAdd, id }) => {
@@ -36,35 +36,51 @@ class TranslationsList extends Component {
     this.setState({
       showModal: true,
       editOrAdd,
-      functionToEdit: editOrAdd === 'Edit' ? functions[id] : {id: null, name: '', expression: ''}
+      functionToEdit: editOrAdd === 'Edit' ? functions[id] : {
+        id: null,
+        name: '',
+        operator: '',
+        firstParamInt: '',
+        firstParamFunc: '',
+        secondParamInt: '',
+        secondParamFunc: '',
+      }
     })
   }
 
-  editFunction = async ({ id, name, expression }) => {
+  editFunction = async (args) => {
     
     const { updateFunction, updateMessage } = this.props
 
     this.handleClose()
     
-    const response = await editFunctionAsync(JSON.stringify({ id, name, expression }))
+    const response = await editFunctionAsync(JSON.stringify(args))
 
     if (response.success) {
-      updateFunction({ id, name, expression })
+      updateFunction(args)
       updateMessage({ message: 'The changes were saved.', bsStyle: 'success'})
     } else {
       updateMessage({ message: 'There was an error processing your request.', bsStyle: 'danger'})
     }
   }
   
-  addNewFunction = async ({ name, expression }) => {
+  addNewFunction = async (args) => {
     const { addFunction, updateMessage } = this.props
 
     this.handleClose()
 
-    const response = await addFunctionAsync(JSON.stringify({ name, expression }))
+    const response = await addFunctionAsync(JSON.stringify(args))
 
     if (response.success) {
-      addFunction({ id: response.newFunction.id, name, expression })
+      const func = response.newFunction
+      addFunction({ id: String(func.id),
+          name: func.name,
+          operator: func.operator,
+          firstParamInt: func.first_parameter_int,
+          firstParamFunc: func.first_parameter_func_id,
+          secondParamInt: func.second_parameter_int,
+          secondParamFunc: func.second_parameter_func_id,
+      })
       updateMessage({ message: 'The function was added.', bsStyle: 'success'})
     } else {
       updateMessage({ message: 'There was an error processing your request.', bsStyle: 'danger'})
@@ -108,18 +124,18 @@ class TranslationsList extends Component {
   
   render() {
 
-    const { functions, styleOptions } = this.props
+    const { functions, styleOptions, functionNames } = this.props
     const { showModal, editOrAdd, functionToEdit } = this.state
 
     const functionsArray = functions ? Object.keys(functions).map(key => functions[key]) : []
-    
+
     return (
       <div className="flex-column" style={{width: '80%', maxWidth: '850px', justifyContent: 'flex-start'}}>
         <div className="flex-row" style={{justifyContent: 'space-between', width: '100%'}}>
           <div
             className="flex-row"
             style={{ width: '77%', justifyContent: 'space-around', fontSize: '1.3em',
-            fontWeight: 700, padding: '20px'}}
+            fontWeight: 700, padding: '20px', paddingBottom: 0}}
           >
             <div
               className="flex-row"
@@ -145,13 +161,24 @@ class TranslationsList extends Component {
               <div key={func.id} className="flex-row func-item-wrapper" style={{width: '100%', justifyContent: 'space-between'}}>
                 <ListGroupItem
                   bsStyle={styleOptions[func.status]}
-                  style={{padding: 0, width: '77%', }}
+                  style={{padding: 0, width: '77%', border: 'none', borderBottom: '1px solid rgb(200, 200, 200)', marginBottom: '2px'}}
                   className="flex-column func-item"
                 >
                   <div className="flex-column" style={{width: '100%', padding: '20px'}}>
                     <div className='flex-row' style={{width: '100%', justifyContent: 'space-around'}}>
-                      <div style={{width: '30%', textAlign: 'center'}} className="message-header">{func.name}</div>
-                      <div style={{width: '30%', textAlign: 'center'}}>{func.expression}</div>
+                      <div style={{width: '30%', textAlign: 'center', fontSize: '1.6em'}} className="message-header">
+                        <Label bsSize="large">{func.name}
+                        </Label>
+                      </div>
+                      <div style={{width: '30%', textAlign: 'center'}}>
+                        {func.firstParamFunc && <Label>{functions[func.firstParamFunc].name}</Label>}
+                        {func.firstParamInt && func.firstParamInt}
+                        {' '}
+                        {func.operator && func.operator}
+                        {' '}
+                        {func.secondParamFunc && <Label>{functions[func.secondParamFunc].name}</Label>}
+                        {func.secondParamInt && func.secondParamInt}
+                      </div>
                     </div>
                   </div>
                 </ListGroupItem>
@@ -179,6 +206,8 @@ class TranslationsList extends Component {
         </ListGroup>
         <InputModal
           showModal={showModal}
+          functions={functions}
+          functionNames={functionNames}
           functionToEdit={functionToEdit}
           editOrAdd={editOrAdd}
           handleClose={this.handleClose}
@@ -189,5 +218,5 @@ class TranslationsList extends Component {
   }
 }
 
-export default TranslationsList
+export default FunctionsList
 
