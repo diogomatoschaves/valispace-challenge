@@ -22,8 +22,8 @@ class App extends Component {
     const response = await fetchFunctions()
 
     if (response.functions && response.functions instanceof Array) {
-      response.functions.forEach(func => {
-        this.addFunction({
+      this.addFunction(response.functions.map(func => {
+        return {
           id: String(func.id),
           name: func.name,
           operator: func.operator,
@@ -31,8 +31,8 @@ class App extends Component {
           firstParamFunc: func.first_parameter_func_id,
           secondParamInt: func.second_parameter_int,
           secondParamFunc: func.second_parameter_func_id,
-        })
-      })
+        }
+      }))
     }
   }
 
@@ -40,49 +40,54 @@ class App extends Component {
 
     const { functions } = this.state
 
-    if (prevState.functions !== functions) {
+    if (prevState.functions !== functions && prevState.functions) {
       this.setState((state) => {
         return {
           ...state,
-          functionNames: Object.keys(state.functions).map(key => state.functions[key].name)
+          functionNames: Object.keys(state.functions).map(key => {
+            return state.functions[key].name
+          }),
+          dependencies: Object.keys(state.functions).reduce((newObj, key) => {
+            const func = state.functions[key]
+            if (func.firstParamFunc) newObj[func.firstParamFunc] = [...newObj[func.firstParamFunc], func.id]
+            if (func.secondParamFunc) newObj[func.secondParamFunc] = [...newObj[func.secondParamFunc], func.id]
+
+            return newObj
+          }, Object.keys(state.functions).reduce((dep, func) => {
+            return {...dep, [func]: []}
+          }, {}))
         }
       })
     }
   }
 
-  addFunction = ({ id, name, operator, firstParamInt, firstParamFunc, secondParamInt, secondParamFunc }) => {
+  addFunction = (argsArray) => {
     this.setState((state) => {
       return {
         functions: {
           ...state.functions,
-          [id]: {
-            id,
-            name,
-            operator,
-            firstParamInt,
-            firstParamFunc,
-            secondParamInt,
-            secondParamFunc
-          }
+          ...argsArray.reduce((newObj, entry) => {
+            return {
+              ...newObj,
+              [entry.id]: entry
+            }
+          }, {})
+          
         }
       }
     })
   }
   
-  updateFunction = ({ id, name, operator, firstParamInt, firstParamFunc, secondParamInt, secondParamFunc }) => {
+  updateFunction = (args) => {
+
     this.setState(state => {
       return {
         functions: Object.keys(state.functions).reduce((newState, funcId) => {
-          return funcId === id ? {
+          return funcId === args.id ? {
             ...newState,
-            [id]: {
-              id,
-              name,
-              operator,
-              firstParamInt,
-              firstParamFunc,
-              secondParamInt,
-              secondParamFunc
+            [args.id]: {
+              ...state.functions[args.id],
+              ...args,
             }
           } : {
             ...newState,
@@ -119,7 +124,7 @@ class App extends Component {
 
   render() {
 
-    const { functions, functionNames, bsStyle, showMessage, message } = this.state
+    const { functions, functionNames, bsStyle, showMessage, message, dependencies } = this.state
 
     return (
         <Route path="/" render={({ location }) => (
@@ -146,6 +151,7 @@ class App extends Component {
                 <FunctionsList 
                   functions={functions} 
                   functionNames={functionNames}
+                  dependencies={dependencies}
                   updateFunction={this.updateFunction}
                   addFunction={this.addFunction}
                   updateMessage={this.updateMessage}

@@ -74,14 +74,14 @@ class FunctionsList extends Component {
     if (response.success) {
       const func = response.newFunction
       console.log(func)
-      addFunction({ id: String(func.id),
+      addFunction([{ id: String(func.id),
           name: func.name,
           operator: func.operator,
           firstParamInt: func.first_parameter_int,
           firstParamFunc: func.first_parameter_func,
           secondParamInt: func.second_parameter_int,
           secondParamFunc: func.second_parameter_func,
-      })
+      }])
       updateMessage({ message: 'The function was added.', bsStyle: 'success'})
     } else {
       updateMessage({ message: 'There was an error processing your request.', bsStyle: 'danger'})
@@ -104,7 +104,7 @@ class FunctionsList extends Component {
   
   render() {
 
-    const { functions, styleOptions, functionNames } = this.props
+    const { functions, styleOptions, functionNames, dependencies } = this.props
     const { showModal, editOrAdd, functionToEdit } = this.state
 
     console.log(functions)
@@ -152,12 +152,12 @@ class FunctionsList extends Component {
                         <Label bsStyle="primary" bsSize="large">{func.name}</Label>
                       </div>
                       <div style={{width: '30%', textAlign: 'center'}}>
-                        {func.firstParamFunc && <Label bsStyle="primary">{functions[func.firstParamFunc].name}</Label>}
+                        {func.firstParamFunc && functions[func.firstParamFunc] && <Label bsStyle="primary">{functions[func.firstParamFunc].name}</Label>}
                         {func.firstParamInt && func.firstParamInt}
                         {' '}
                         {func.operator && func.operator}
                         {' '}
-                        {func.secondParamFunc && <Label bsStyle="primary">{functions[func.secondParamFunc].name}</Label>}
+                        {func.secondParamFunc && functions[func.secondParamFunc] && <Label bsStyle="primary">{functions[func.secondParamFunc].name}</Label>}
                         {func.secondParamInt && func.secondParamInt}
                       </div>
                     </div>
@@ -189,6 +189,7 @@ class FunctionsList extends Component {
           showModal={showModal}
           functions={functions}
           functionNames={functionNames}
+          dependencies={dependencies}
           functionToEdit={functionToEdit}
           editOrAdd={editOrAdd}
           handleClose={this.handleClose}

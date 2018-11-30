@@ -13,13 +13,13 @@ class InputModal extends Component {
     id: '',
     firstParamIntResults: [],
     secondParamIntResults: [],
-    inputNoValid: false,
+    inputNotValid: false,
     originalName: ''
   }
 
   componentDidUpdate(prevProps, prevState) {
 
-    const { functionToEdit } = this.props
+    const { functionToEdit, dependencies } = this.props
 
     if (prevProps.functionToEdit !== functionToEdit && functionToEdit && Object.keys(functionToEdit).length !== 0) {
       this.setState({
@@ -27,7 +27,8 @@ class InputModal extends Component {
         firstParamIntResults: [],
         secondParamIntResults: [],
         originalName: functionToEdit.name,
-        inputNotValid: false
+        inputNotValid: false,
+        notAllowedKeys: new Set(this.getDependency(functionToEdit.id, dependencies).flat(100))
       })
     }
   }
@@ -53,6 +54,10 @@ class InputModal extends Component {
     }
   }
 
+  getDependency = (id, dependencies) => {
+    return [...dependencies[id], ...dependencies[id].map(key => this.getDependency(key, dependencies))]
+  }
+
   handleChange = async (e) => {
 
     e.persist()
@@ -69,7 +74,7 @@ class InputModal extends Component {
             firstParamIntResults: [],
             secondParamIntResults: [],
             [`${e.target.name}Results`]: response.results.filter(func => {
-              return ![state.id, state.firstParamFunc, state.secondParamFunc].includes(String(func.id))
+              return ![state.id, ...state.notAllowedKeys].includes(String(func.id))
             }),
           }
         })

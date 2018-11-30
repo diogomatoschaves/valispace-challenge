@@ -2,6 +2,18 @@
  * Created by diogomatoschaves on 30/11/2018.
  */
 
+
+const chain_linked_list = (linkedFunctions, functions, id) => {
+
+  if (functions[id].firstParamFunc) {
+    linkedFunctions.push(functions[id].firstParamFunc)
+  } else {
+    
+  }
+
+  return result
+}
+
 class Node {
   constructor(value){
     this.left = null;

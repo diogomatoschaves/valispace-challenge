@@ -2,6 +2,7 @@
 
 .idea
 backend/valispace/__pycache__/
+backend/valispace_backend/__pycache__/
 
 frontend/node_modules
 frontend/.pnp
