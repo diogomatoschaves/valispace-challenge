@@ -1,9 +1,9 @@
-# valispace-challenge
+# Valispace-challenge
 
-This project is an implementation of all the functionality as per the challenge's requirements.
+This project is an implementation of all the functionality as per Valispace's coding challenge's requirements.
 
 The app consists of a user interface that enables the user to create functions and perform calculations.
-The user can add, edit or delete functions under the admin panel (/admin), and perform the calculations on the main view (/)
+The user can add, edit or delete functions under the admin panel ('/admin'), and perform the calculations on the main view ('/')
 The frontend was implemented with the React Javascript framework, whereas the backend was built on top of the Django Framework.
 
 You can test the app on the following link:
